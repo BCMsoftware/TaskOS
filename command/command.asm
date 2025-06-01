@@ -1,0 +1,8 @@
+%include "./command/cd.asm"
+%include "./command/dir.asm"
+%include "./command/cls.asm"
+%include "./command/mkdir.asm"
+%include "./command/type.asm"
+%include "./command/del.asm"
+%include "./command/rd.asm"
+%include "./command/write.asm"
