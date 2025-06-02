@@ -190,6 +190,7 @@ writepath2code:
 showpath:
     mov ah,03h
     int 10h
+
     mov ah,13h
     mov al,1
     mov bp,cdCommandDisk

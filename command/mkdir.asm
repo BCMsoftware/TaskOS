@@ -3,14 +3,12 @@ mkdircommand:
     mov al,[input+17]
     cmp al,0x00
     jne mkdirnametobig
-
     mov cl,10
     mov si,6 ;指针初始化
     mov ch,0
 
 mkdirset0to20:
     mov al,[input+si]
-
     cmp al,0x00
     je mkdirset
 
@@ -19,6 +17,7 @@ mkdirset0to20:
 
     inc si
     dec cl
+    jnz mkdirset0to20
 
     jmp mkdirwritemem
 
@@ -26,8 +25,8 @@ mkdirset:
     mov al,0x20
     mov [input+si],al
     add si,1
-    add ch,1
 
+    add ch,1
     dec cl
     jnz mkdirset0to20
 
@@ -47,43 +46,37 @@ mkdirwritemem:
 mkdirfindcmfile: ;遍历218个目录看是否有重名的目录
     mov ax,[si]
     mov bx,[input+6]
-
     cmp ax,bx
     jne mkdirfindnextdir
 
     mov ax,[si+2]
     mov bx,[input+6+2]
-
     cmp ax,bx
     jne mkdirfindnextdir
 
     mov ax,[si+4]
     mov bx,[input+6+4]
-
     cmp ax,bx
     jne mkdirfindnextdir
 
     mov ax,[si+6]
     mov bx,[input+6+6]
-
     cmp ax,bx
     jne mkdirfindnextdir
 
     mov ax,[si+8]
     mov bx,[input+6+8]
-
     cmp ax,bx
     jne mkdirfindnextdir
 
-    ;还要比较当前目录id
+;还要比较当前目录id
     pop ax
     push ax
-
     mov ah,[si-1]
     cmp al,ah
     jne mkdirfindnextdir
 
-    ;说明有同名文件夹，抛出异常
+;说明有同名文件夹，抛出异常
     mov dx,di
     mov ah,13h
     mov al,1
@@ -92,8 +85,8 @@ mkdirfindcmfile: ;遍历218个目录看是否有重名的目录
     mov bl,0x07
     mov bh,0
     int 10h
-
     jmp Command
+
 mkdirfindnextdir:
     add si,14
     dec cl
@@ -141,6 +134,7 @@ mkdirnoentrydir:
     int 10h
 
     jmp Command
+
 mkdirnametobig:
     mov ah,03h
     int 10h
@@ -172,7 +166,6 @@ mkdirdir:
 mkdirwritememwhile:
     mov al,[input+bp]
     mov [si],al
-
     add si,1
     add bp,1
 

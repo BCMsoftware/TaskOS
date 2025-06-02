@@ -28,12 +28,12 @@ rdset0to20:
 rdset0to20run:
     mov al,0x20
     mov [input+si],al
-
     add bl,1
     add si,1
 
     dec cl
     jnz rdset0to20
+
     jmp rddir
 
 rdentryfiletobig:
@@ -49,6 +49,7 @@ rdentryfiletobig:
     int 10h
 
     jmp Command
+
 rdnoentryfilename:
     mov ah,03h
     int 10h
@@ -65,14 +66,14 @@ rdnoentryfilename:
 
 rdentryfiletobigmsg db "No folder is larger than 10 bytes."
 rdnoentryfilenamemsg db "You did not enter a folder name."
-
 rddir:
     cmp bl,10
     je rdnoentryfilename
-
     ;搜索文件夹
+
     mov si,0-0x8000+0x200+3
     mov bl,218
+
     pop ax
     push ax
 
@@ -103,13 +104,13 @@ rdfinddir:
     jne rdfindnextdir
 
     mov al,[si-3]
+
     ;查看文件夹是否还有文件
     mov cl,218
     mov bp,0-0x8000+4096-0x200+2
 
 rdfinddirhavefile:
     mov ah,[bp]
-
     cmp al,ah
     je rddirhavefile
 
@@ -127,6 +128,7 @@ rddeldir:
     add si,1
     dec cl
     jnz rddeldir
+
     mov ah,03h
     int 10h
 
